@@ -11,29 +11,29 @@
                 <h2>Realize seu Login</h2></v-card-title
               >
               <v-card-text>
-                <v-form>
+                <v-form ref="loginForm" @submit.prevent="handleLogin">
                   <v-text-field
+                    class="mt-5"
                     label="Email"
                     type="text"
                     v-model="userEmail"
                     :rules="userEmailRules"
                   ></v-text-field>
                   <v-text-field
+                    class="mt-2"
                     label="Senha"
                     type="password"
                     v-model="userPassword"
                     :rules="userPasswordRules"
                   ></v-text-field>
+                  <v-btn class="mt-8 ms-4" color="primary" type="submit">Entrar</v-btn>
+                  <v-card-text>
+                    <p>
+                      Ainda não tem uma conta?
+                      <router-link to="/novo_usuario"><strong>Cadastre-se</strong></router-link>
+                    </p>
+                  </v-card-text>
                 </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <v-btn color="primary">Entrar</v-btn>
-              </v-card-actions>
-              <v-card-text>
-                <p>
-                  Ainda não tem uma conta?
-                  <router-link to="/novo_usuario"><strong>Cadastre-se</strong></router-link>
-                </p>
               </v-card-text>
             </div>
           </v-card>
@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -57,6 +58,15 @@ export default {
         (v) => !!v || 'A senha é obrigatória',
         (v) => (v && v.length >= 6) || 'A senha deve ter pelo menos 6 caracteres'
       ]
+    }
+  },
+  methods: {
+    async handleLogin() {
+      const { validation } = await this.$refs.loginForm.validate()
+
+      if (!validation) {
+        alert('preencha todos os dados!')
+      }
     }
   }
 }
@@ -73,7 +83,7 @@ export default {
 
 .containerBackground {
   background-color: #2f157e;
-  width: 90%; /* Ajuste o tamanho do card conforme necessário */
+  width: 90%;
   padding: 20px;
 }
 </style>
