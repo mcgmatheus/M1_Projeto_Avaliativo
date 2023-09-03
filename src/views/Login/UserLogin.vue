@@ -83,7 +83,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .pageBackground {
   background-color: #0f0a1c;
 }
