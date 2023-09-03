@@ -11,7 +11,9 @@
                 <h2>Realize seu Login</h2></v-card-title
               >
               <v-card-text>
-                <v-form ref="loginForm" @submit.prevent="handleLogin">
+                <v-form ref="form" @submit.prevent="handleLogin">
+                  {{ this.userEmail }}
+                  {{ this.userPassword }}
                   <v-text-field
                     class="mt-5"
                     label="Email"
@@ -49,11 +51,11 @@ export default {
   data() {
     return {
       userEmail: '',
+      userPassword: '',
       userEmailRules: [
         (v) => !!v || 'O email é obrigatório',
         (v) => /.+@.+\..+/.test(v) || 'Informe um email válido'
       ],
-      userPassword: '',
       userPasswordRules: [
         (v) => !!v || 'A senha é obrigatória',
         (v) => (v && v.length >= 6) || 'A senha deve ter pelo menos 6 caracteres'
@@ -62,10 +64,28 @@ export default {
   },
   methods: {
     async handleLogin() {
-      const { validation } = await this.$refs.loginForm.validate()
+      console.log('Antes da validação')
+      const { valid } = await this.$refs.form.validate()
+      console.log('Apos validação', valid)
 
-      if (!validation) {
-        alert('preencha todos os dados!')
+      if (!valid) {
+        console.log('Antes di alert', valid)
+        alert('Preencha todos os dados!')
+        console.log('Após o alert', valid)
+        return
+      } else {
+        console.log('entrou no else')
+        try {
+          const result = await axios.post('https://localhost:3000/sessions', {
+            email: this.userEmail,
+            password: this.userPassword
+          })
+          console.log(result)
+        } catch (error) {
+          alert(error.message)
+        }
+        // const result = confirm('Usuário cadastrado com sucesso')
+        // this.$refs.form.reset()
       }
     }
   }
