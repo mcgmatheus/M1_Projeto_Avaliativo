@@ -68,7 +68,7 @@ export default {
         addEmail: '',
         addPassword: '',
         confirmPassword: '',
-        planType: ''
+        planType: 'bronze'
       },
       itens: [
         { title: 'Bronze', value: 'bronze' },
@@ -118,7 +118,6 @@ export default {
             this.$router.push('/')
           }
         } catch (error) {
-          console.log(error)
           alert('Não foi possível criar a conta nesse momento')
         }
       }
