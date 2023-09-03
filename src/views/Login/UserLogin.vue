@@ -11,9 +11,7 @@
                 <h2>Realize seu Login</h2></v-card-title
               >
               <v-card-text>
-                <v-form ref="form" @submit.prevent="handleLogin">
-                  {{ this.user.email }}
-                  {{ this.user.password }}
+                <v-form ref="loginForm" @submit.prevent="handleLogin">
                   <v-text-field
                     class="mt-5"
                     label="Email"
@@ -54,41 +52,31 @@ export default {
         email: '',
         password: ''
       },
-      userEmailRules: [
-        (v) => !!v || 'O email é obrigatório',
-        (v) => /.+@.+\..+/.test(v) || 'Informe um email válido'
-      ],
-      userPasswordRules: [
-        (v) => !!v || 'A senha é obrigatória',
-        (v) => (v && v.length >= 6) || 'A senha deve ter pelo menos 6 caracteres'
-      ]
+      userEmailRules: [(v) => !!v || 'O email é obrigatório'],
+      userPasswordRules: [(v) => !!v || 'A senha é obrigatória']
     }
   },
   methods: {
     async handleLogin() {
-      console.log('Antes da validação')
-      const { valid } = await this.$refs.form.validate()
-      console.log('Apos validação', valid)
+      const { valid } = await this.$refs.loginForm.validate()
 
       if (!valid) {
-        console.log('Antes do alert', valid)
         alert('Preencha todos os dados!')
-        console.log('Após o alert', valid)
         return
       } else {
-        console.log('entrou no else')
         try {
           const result = await axios.post('http://localhost:3000/sessions', {
             email: this.user.email,
             password: this.user.password
           })
-          console.log(result)
+          if (result.status == 200) {
+            localStorage.setItem('userInfo', JSON.stringify(result.data))
+            this.$router.push('/home')
+          }
         } catch (error) {
-          alert(error.message)
+          alert('Houve um erro ao realizar o Login, verifique seus dados.')
+          this.$refs.loginForm.reset()
         }
-        const result = confirm('Usuário cadastrado com sucesso')
-        console.log(result)
-        this.$refs.form.reset()
       }
     }
   }
