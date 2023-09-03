@@ -16,7 +16,12 @@
                     v-model="newUser.addName"
                     :rules="userAddNameRules"
                   ></v-text-field>
-                  <v-text-field label="Email" type="text" :rules="userAddEmailRules">
+                  <v-text-field
+                    label="Email"
+                    type="text"
+                    v-model="newUser.addEmail"
+                    :rules="userAddEmailRules"
+                  >
                   </v-text-field>
                   <v-text-field
                     label="Senha"
@@ -54,7 +59,7 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -99,6 +104,23 @@ export default {
       if (!valid) {
         alert('Preencha todos os dados!')
         return
+      } else {
+        try {
+          const result = await axios.post('http://localhost:3000/users', {
+            name: this.newUser.addName,
+            email: this.newUser.addEmail,
+            password: this.newUser.addPassword,
+            type_plan: this.newUser.planType
+          })
+          if (result.status == 201) {
+            alert('Usuário cadastrado com sucesso')
+            this.$refs.addUserForm.reset()
+            this.$router.push('/')
+          }
+        } catch (error) {
+          console.log(error)
+          alert('Não foi possível criar a conta nesse momento')
+        }
       }
     }
   }
