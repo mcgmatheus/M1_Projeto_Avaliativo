@@ -12,20 +12,20 @@
               >
               <v-card-text>
                 <v-form ref="form" @submit.prevent="handleLogin">
-                  {{ this.userEmail }}
-                  {{ this.userPassword }}
+                  {{ this.user.email }}
+                  {{ this.user.password }}
                   <v-text-field
                     class="mt-5"
                     label="Email"
                     type="text"
-                    v-model="userEmail"
+                    v-model="user.email"
                     :rules="userEmailRules"
                   ></v-text-field>
                   <v-text-field
                     class="mt-2"
                     label="Senha"
                     type="password"
-                    v-model="userPassword"
+                    v-model="user.password"
                     :rules="userPasswordRules"
                   ></v-text-field>
                   <v-btn class="mt-8 ms-4" color="primary" type="submit">Entrar</v-btn>
@@ -50,8 +50,10 @@ import axios from 'axios'
 export default {
   data() {
     return {
-      userEmail: '',
-      userPassword: '',
+      user: {
+        email: '',
+        password: ''
+      },
       userEmailRules: [
         (v) => !!v || 'O email é obrigatório',
         (v) => /.+@.+\..+/.test(v) || 'Informe um email válido'
@@ -69,23 +71,24 @@ export default {
       console.log('Apos validação', valid)
 
       if (!valid) {
-        console.log('Antes di alert', valid)
+        console.log('Antes do alert', valid)
         alert('Preencha todos os dados!')
         console.log('Após o alert', valid)
         return
       } else {
         console.log('entrou no else')
         try {
-          const result = await axios.post('https://localhost:3000/sessions', {
-            email: this.userEmail,
-            password: this.userPassword
+          const result = await axios.post('http://localhost:3000/sessions', {
+            email: this.user.email,
+            password: this.user.password
           })
           console.log(result)
         } catch (error) {
           alert(error.message)
         }
-        // const result = confirm('Usuário cadastrado com sucesso')
-        // this.$refs.form.reset()
+        const result = confirm('Usuário cadastrado com sucesso')
+        console.log(result)
+        this.$refs.form.reset()
       }
     }
   }
