@@ -13,6 +13,7 @@
                   <v-text-field
                     label="Nome Completo"
                     type="text"
+                    v-model="newUser.addName"
                     :rules="userAddNameRules"
                   ></v-text-field>
                   <v-text-field label="Email" type="text" :rules="userAddEmailRules">
@@ -20,19 +21,22 @@
                   <v-text-field
                     label="Senha"
                     type="password"
+                    v-model="newUser.addPassword"
                     :rules="userAddPasswordRules"
                   ></v-text-field>
                   <v-text-field
                     label="Confirme sua senha"
                     type="password"
-                    :rules="userConfirmPasswordRules"
+                    v-model="newUser.confirmPassword"
+                    :rules="(userConfirmPasswordRules, userConfirmPasswordRules)"
                   ></v-text-field>
                   <v-select
                     label="Tipo de plano"
                     :items="itens"
+                    v-model="newUser.planType"
                     :rules="userPlanTypeRules"
                   ></v-select>
-                  <v-btn class="mt-8 ms-4" color="primary" type="submit">Cadastrar</v-btn>
+                  <v-btn class="mt-2 ms-4" color="primary" type="submit">Cadastrar</v-btn>
                 </v-form>
               </v-card-text>
             </div>
@@ -44,15 +48,52 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 export default {
   data() {
     return {
+      newUser: {
+        addName: '',
+        addEmail: '',
+        addPassword: '',
+        confirmPassword: '',
+        planType: ''
+      },
       itens: [
         { title: 'Bronze', value: 'bronze' },
         { title: 'Prata', value: 'silver' },
         { title: 'Ouro', value: 'gold' }
-      ]
+      ],
+      userAddNameRules: [
+        (v) => !!v || 'O nome é obrigatório',
+        (v) => {
+          const userFullName = v && v.trim()
+          return (userFullName && userFullName.split(' ').length >= 2) || 'Informe o nome completo'
+        }
+      ],
+      userAddEmailRules: [
+        (v) => !!v || 'O email é obrigatório',
+        (v) => /.+@.+\..+/.test(v) || 'Informe um email válido'
+      ],
+      userAddPasswordRules: [
+        (v) => !!v || 'A senha é obrigatória',
+        (v) => (v && v.length >= 8) || 'A senha deve ter pelo menos 8 caracteres',
+        (v) => (v && v.length <= 20) || 'A senha deve ter até 20 caracteres'
+      ],
+      userConfirmPasswordRules: [
+        (v) => v === this.newUser.addPassword || 'As senhas não coincidem'
+      ],
+      userPlanTypeRules: [(v) => !!v || 'É necessário selecionar um plano']
+    }
+  },
+  methods: {
+    async handleAddUser() {
+      const { valid } = await this.$refs.addUserForm.validate()
+
+      if (!valid) {
+        alert('Preencha todos os dados!')
+        return
+      }
     }
   }
 }
