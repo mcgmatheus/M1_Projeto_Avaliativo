@@ -37,6 +37,12 @@
                     :rules="userPlanTypeRules"
                   ></v-select>
                   <v-btn class="mt-2 ms-4" color="primary" type="submit">Cadastrar</v-btn>
+                  <v-card-text>
+                    <p>
+                      Já é cadastrado?
+                      <router-link to="/"><strong>Faça login</strong></router-link>
+                    </p>
+                  </v-card-text>
                 </v-form>
               </v-card-text>
             </div>
