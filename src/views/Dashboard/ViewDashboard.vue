@@ -26,7 +26,9 @@
     <v-main>
       <v-container>
         <v-row>
-          <v-col><h1>Bem vindo, nome</h1></v-col>
+          <v-col>
+            <h1>Bem vindo, {{ userName }}</h1>
+          </v-col>
         </v-row>
         <v-row>
           <v-col cols="5">
@@ -63,6 +65,22 @@
   </v-app>
 </template>
 
-<script></script>
+<script>
+export default {
+  data() {
+    return {
+      userName: ''
+    }
+  },
+  mounted() {
+    const storedUserInfo = localStorage.getItem('userInfo')
+    if (storedUserInfo) {
+      const userInfo = JSON.parse(storedUserInfo)
+      this.userName = userInfo.name
+    }
+  },
+  methods: {}
+}
+</script>
 
 <style scoped></style>
