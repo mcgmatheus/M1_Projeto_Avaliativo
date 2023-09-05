@@ -6,6 +6,8 @@
           <v-card class="formContainer d-flex flex-column justify-center align-center pa-5">
             <div class="ma-5" style="width: 100%">
               <v-card-title class="formItem d-flex flex-column pa-5 align-center">
+                <v-img src="/TrainSysLogo.png" alt="TrainSys logo" width="96px"></v-img>
+                <h4>Bem vindo ao TrainSys</h4>
                 <h2>Cadastro de usuário</h2>
               </v-card-title>
               <v-card-text>
