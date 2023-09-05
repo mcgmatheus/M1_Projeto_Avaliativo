@@ -7,7 +7,8 @@
             <div class="ma-5" style="width: 100%">
               <v-card-title class="formItem d-flex flex-column pa-5 align-center">
                 <v-img src="/TrainSysLogo.png" width="96px"></v-img>
-                <h4>Bem vindo ao TrainSys</h4>
+                <h4>TrainSys</h4>
+                <h6>Gerêncie seus alunos de maneira rápida e fácil</h6>
                 <h2>Realize seu Login</h2></v-card-title
               >
               <v-card-text>
