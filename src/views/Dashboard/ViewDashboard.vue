@@ -35,7 +35,7 @@
             <v-card>
               <div class="d-flex">
                 <v-card-text class="d-flex flex-column">
-                  <p class="pa-3">qtd Alunos</p>
+                  <p class="pa-3">{{ amountStudents }} Alunos</p>
                   <router-link to="/cadastro_novo_aluno">
                     <v-btn color="#2f157e" class="text-white">Adicionar</v-btn>
                   </router-link> </v-card-text
@@ -49,7 +49,7 @@
             <v-card>
               <div class="d-flex">
                 <v-card-text class="d-flex flex-column">
-                  <p class="pa-3">qtd Exercícios</p>
+                  <p class="pa-3">{{ amountExercises }} Exercícios</p>
                   <router-link to="/cadastro_novo_treino">
                     <v-btn color="#2f157e" class="text-white">Adicionar</v-btn>
                   </router-link> </v-card-text
@@ -66,10 +66,13 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
-      userName: ''
+      userName: '',
+      amountStudents: '',
+      amountExercises: ''
     }
   },
   mounted() {
@@ -78,8 +81,17 @@ export default {
       const userInfo = JSON.parse(storedUserInfo)
       this.userName = userInfo.name
     }
-  },
-  methods: {}
+    axios
+      .get('http://localhost:3000/dashboard')
+      .then((response) => {
+        this.amountStudents = response.data.amount_students
+        this.amountExercises = response.data.amount_exercises
+      })
+      .catch((error) => {
+        alert('Não foi possível obter dados')
+        console.log(error)
+      })
+  }
 }
 </script>
 
