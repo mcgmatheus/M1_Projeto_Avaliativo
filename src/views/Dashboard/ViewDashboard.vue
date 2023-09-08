@@ -28,7 +28,7 @@
               <div class="d-flex">
                 <v-card-text class="d-flex flex-column">
                   <p class="pa-3">{{ amountExercises }} Exercícios</p>
-                  <router-link to="/cadastro_novo_treino">
+                  <router-link to="/gerenciamento_exercicios">
                     <v-btn color="#2f157e" class="text-white">Adicionar</v-btn>
                   </router-link> </v-card-text
                 ><v-card-text>
