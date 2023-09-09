@@ -39,7 +39,7 @@
                 </thead>
                 <tbody>
                   <tr v-for="exercise in exercises" :key="exercise.name">
-                    <td>{{ exercise.name }}</td>
+                    <td>{{ exercise.description }}</td>
                   </tr>
                 </tbody>
               </v-table>
@@ -60,20 +60,7 @@ export default {
     return {
       addExercise: '',
       addExerciseRules: [(v) => !!v || 'Adicione um exercício'],
-      exercises: [
-        { name: 'supino reto' },
-        { name: 'supino obliquo' },
-        { name: 'agachamento livre' },
-        { name: 'supino reto' },
-        { name: 'supino obliquo' },
-        { name: 'agachamento livre' },
-        { name: 'supino reto' },
-        { name: 'supino obliquo' },
-        { name: 'agachamento livre' },
-        { name: 'supino reto' },
-        { name: 'supino obliquo' },
-        { name: 'agachamento livre' }
-      ]
+      exercises: []
     }
   },
   components: {
@@ -82,24 +69,31 @@ export default {
   methods: {
     async handleAddExercise() {
       const { valid } = await this.$refs.addExerciseForm.validate()
-      console.log(valid)
       if (!valid) {
-        console.log(valid)
-        console.log('dentro do if de cadastro')
-        alert('Erro ao cadastrar exercício')
+        alert('Insira um novo exercício')
         return
       } else {
-        console.log('dentro do else de cadastro')
         try {
           await axios.post('http://localhost:3000/exercises', {
             description: this.addExercise
           })
+          this.exercises.push({ description: this.addExercise })
           alert('Exercício cadastrado com sucesso!')
         } catch (error) {
           alert('Falha ao cadastrar exercício')
         }
       }
     }
+  },
+  mounted() {
+    axios
+      .get('http://localhost:3000/exercises')
+      .then((response) => {
+        this.exercises = response.data
+      })
+      .catch(() => {
+        alert('Falha ao carregar dados')
+      })
   }
 }
 </script>
