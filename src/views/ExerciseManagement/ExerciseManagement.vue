@@ -10,13 +10,18 @@
         <v-row>
           <v-col cols="12">
             <v-card>
-              <v-form class="ma-5">
+              <v-form ref="addExerciseForm" @submit.prevent="handleAddExercise" class="ma-5">
                 <v-row class="text-center">
                   <v-col cols="9">
-                    <v-text-field label="Digite o nome do exercício" type="text"></v-text-field>
+                    <v-text-field
+                      label="Digite o nome do exercício"
+                      type="text"
+                      v-model="addExercise"
+                      :rules="addExerciseRules"
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="3">
-                    <v-btn class="mt-2">Cadastrar</v-btn>
+                    <v-btn class="mt-2" color="primary" type="submit">Cadastrar</v-btn>
                   </v-col>
                 </v-row>
               </v-form>
@@ -47,12 +52,14 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 import NavigationBar from '../../components/NavigationBar.vue'
 
 export default {
   data() {
     return {
+      addExercise: '',
+      addExerciseRules: [(v) => !!v || 'Adicione um exercício'],
       exercises: [
         { name: 'supino reto' },
         { name: 'supino obliquo' },
@@ -71,6 +78,28 @@ export default {
   },
   components: {
     NavigationBar
+  },
+  methods: {
+    async handleAddExercise() {
+      const { valid } = await this.$refs.addExerciseForm.validate()
+      console.log(valid)
+      if (!valid) {
+        console.log(valid)
+        console.log('dentro do if de cadastro')
+        alert('Erro ao cadastrar exercício')
+        return
+      } else {
+        console.log('dentro do else de cadastro')
+        try {
+          await axios.post('http://localhost:3000/exercises', {
+            description: this.addExercise
+          })
+          alert('Exercício cadastrado com sucesso!')
+        } catch (error) {
+          alert('Falha ao cadastrar exercício')
+        }
+      }
+    }
   }
 }
 </script>
