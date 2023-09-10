@@ -17,10 +17,14 @@
               <v-form class="ma-5">
                 <v-row class="text-center">
                   <v-col cols="9">
-                    <v-text-field label="Pesquisar aluno" type="text"></v-text-field>
+                    <v-text-field
+                      label="Pesquisar aluno"
+                      type="text"
+                      v-model="search"
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="3">
-                    <v-btn class="mt-2" color="primary" type="submit">Pesquisar</v-btn>
+                    <v-btn class="mt-2" color="primary" @click="clearFilter">Limpar</v-btn>
                   </v-col>
                 </v-row>
               </v-form>
@@ -36,7 +40,7 @@
                   <th class="colActions">Ações</th>
                 </thead>
                 <tbody>
-                  <tr v-for="student in students" :key="student.name">
+                  <tr v-for="student in studentsFiltered" :key="student.name">
                     <td>{{ student.name }}</td>
                     <td class="text-right">
                       <router-link to="/cadastro_novo_treino"
@@ -67,19 +71,37 @@ export default {
     return {
       search: '',
       students: [
-        { name: 'João' },
-        { name: 'Ana' },
-        { name: 'Maria' },
-        { name: 'Pedro' },
-        { name: 'João' },
-        { name: 'Ana' },
-        { name: 'Maria' },
-        { name: 'Pedro' }
+        { name: 'João Silva' },
+        { name: 'Ana Silva' },
+        { name: 'Maria Mariana' },
+        { name: 'Pedro José' },
+        { name: 'João Ferreira' },
+        { name: 'Ana Carvalho' },
+        { name: 'Maria Madanela' },
+        { name: 'Pedro Augusto' }
       ]
     }
   },
   components: {
     NavigationBar
+  },
+  computed: {
+    studentsFiltered() {
+      if (!this.search) {
+        return this.students
+      }
+      const searchForStudents = this.students
+
+      const filter = searchForStudents.filter((item) => {
+        return item.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1
+      })
+      return filter
+    }
+  },
+  methods: {
+    clearFilter() {
+      this.search = ''
+    }
   }
 }
 </script>
