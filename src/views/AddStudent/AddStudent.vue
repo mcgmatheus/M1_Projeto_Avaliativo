@@ -180,6 +180,35 @@ export default {
           alert('Houve um erro ao consultar o CEP')
         }
       }
+    },
+    async addStudent() {
+      const { valid } = await this.$refs.addStudentForm.validate()
+      if (!valid) {
+        alert('Preencha todos os dados')
+        return
+      } else {
+        try {
+          const result = await axios.post('http://localhost:3000/students', {
+            name: this.studentName,
+            email: this.studentEmail,
+            contact: this.studentContact,
+            date_birth: this.studentBirth,
+            cep: this.studentCep,
+            street: this.studentStreet,
+            number: this.studentAdressNumber,
+            neighborhood: this.studentNeighborhood,
+            city: this.studentCity,
+            province: this.studentProvince,
+            complement: this.studentAdressComplement
+          })
+          if (result.status == 201) {
+            alert('Aluno cadastrado com sucesso')
+            this.$refs.addStudentForm.reset()
+          }
+        } catch (error) {
+          alert('Não foi possível cadastrar o aluno nesse momento')
+        }
+      }
     }
   }
 }
