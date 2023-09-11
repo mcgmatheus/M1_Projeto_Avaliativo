@@ -11,7 +11,7 @@
                 <v-divider :thickness="2"></v-divider>
               </v-card-title>
               <v-card-text>
-                <v-form class="ma-5">
+                <v-form class="ma-5" ref="addStudentForm" @submit.prevent="addStudent">
                   <v-row>
                     <v-col cols="6">
                       <v-text-field
@@ -55,9 +55,10 @@
                     <v-col cols="3">
                       <v-text-field
                         label="CEP"
-                        type="number"
+                        type="text"
                         v-model="studentCep"
                         :rules="studentCepRules"
+                        @input="findCEP"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="3">
@@ -111,7 +112,7 @@
                     </v-col>
                   </v-row>
                   <v-col>
-                    <v-btn class="mt-2" color="primary">Cadastrar</v-btn>
+                    <v-btn class="mt-2" color="primary" type="submit">Cadastrar</v-btn>
                   </v-col>
                 </v-form>
               </v-card-text>
@@ -125,6 +126,7 @@
 
 <script>
 import NavigationBar from '../../components/NavigationBar.vue'
+import axios from 'axios'
 
 export default {
   data() {
@@ -162,7 +164,24 @@ export default {
     NavigationBar
   },
 
-  methods: {}
+  methods: {
+    async findCEP() {
+      // } else {
+      const cep = this.studentCep.replace(/\D/g, '') // Remove caracteres não numéricos do CEP
+      if (cep.length === 8) {
+        try {
+          const result = await axios.get(`https://viacep.com.br/ws/${cep}/json/`)
+          const data = result.data
+          this.studentStreet = data.logradouro
+          this.studentNeighborhood = data.bairro
+          this.studentCity = data.localidade
+          this.studentProvince = data.uf
+        } catch {
+          alert('Houve um erro ao consultar o CEP')
+        }
+      }
+    }
+  }
 }
 function validBirthDate(date) {
   if (!date) {
