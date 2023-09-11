@@ -40,7 +40,7 @@
                   <th class="colActions">Ações</th>
                 </thead>
                 <tbody>
-                  <tr v-for="student in students" :key="student.name">
+                  <tr v-for="student in studentsFiltered" :key="student.name">
                     <td>{{ student.name }}</td>
                     <td class="text-right">
                       <router-link to="/cadastro_novo_treino"
