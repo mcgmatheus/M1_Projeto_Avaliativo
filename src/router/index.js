@@ -42,12 +42,12 @@ const router = createRouter({
       component: AddStudent
     },
     {
-      path: '/cadastro_novo_treino',
+      path: '/cadastro_novo_treino/:id',
       name: 'AddTraining',
       component: AddTraining
     },
     {
-      path: '/ver_treino',
+      path: '/ver_treino/:id',
       name: 'ViewTraining',
       component: ViewTraining
     }
