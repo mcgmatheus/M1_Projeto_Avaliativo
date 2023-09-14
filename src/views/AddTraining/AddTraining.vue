@@ -3,8 +3,10 @@
     <NavigationBar></NavigationBar>
     <v-main>
       {{ exercisesSelected }}
-      {{ breakTime }}
-      {{ dayOfWeek }}
+      <!-- {{ dayOfWeek }} -->
+      <!-- {{ breakTime }} -->
+      <!-- {{ dayOfWeek }} -->
+      <!-- {{ exercises }} -->
       <v-container>
         <v-row>
           <v-col>
@@ -20,12 +22,12 @@
                       <v-autocomplete
                         clearable
                         chips
+                        multiple
                         label="Selecione o exercício"
                         :items="exercises"
-                        v-moldel="exercisesSelected"
-                        @update:model-value="exercisesSelected = $event"
-                        multiple
-                        variant="outlined"
+                        item-title="description"
+                        item-value="id"
+                        v-model="exercisesSelected"
                       ></v-autocomplete>
                     </v-col>
                   </v-row>
@@ -92,12 +94,12 @@
 
 <script>
 import NavigationBar from '../../components/NavigationBar.vue'
-// import axios from 'axios'
+import axios from 'axios'
 
 export default {
   data() {
     return {
-      exercises: ['supino', 'agachamento', 'corrida'],
+      exercises: [],
       exercisesSelected: [],
       repetitionOfExercise: '',
       exerciseLoad: '',
@@ -116,6 +118,17 @@ export default {
   },
   components: {
     NavigationBar
+  },
+  mounted() {
+    axios
+      .get('http://localhost:3000/exercises')
+      .then((response) => {
+        this.exercises = response.data
+        console.log('entrou no then', this.exercises)
+      })
+      .catch(() => {
+        alert('Falha ao carregar dados')
+      })
   },
   methods: {}
 }
