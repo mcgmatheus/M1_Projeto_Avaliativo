@@ -16,7 +16,7 @@
                 <v-divider :thickness="2"></v-divider>
               </v-card-title>
               <v-card-text>
-                <v-form class="ma-5" ref="" @submit.prevent="">
+                <v-form class="ma-5" ref="addWorkoutForm" @submit.prevent="addWorkout">
                   <v-row>
                     <v-col cols="12">
                       <v-autocomplete
@@ -37,6 +37,7 @@
                         label="Repetições"
                         type="number"
                         v-model="repetitionOfExercise"
+                        :rules="repetitionOfExerciseRules"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="3">
@@ -44,6 +45,7 @@
                         label="Carga"
                         type="number"
                         v-model="exerciseLoad"
+                        :rules="exerciseLoadRules"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="6">
@@ -73,6 +75,7 @@
                         counter
                         clear-icon="mdi-close-circle"
                         label="Observações"
+                        v-model="observations"
                       ></v-textarea>
                     </v-col>
                   </v-row>
@@ -113,7 +116,12 @@ export default {
         { title: 'Sexta-feira', value: 'sexta' },
         { title: 'Sábado', value: 'sabado' },
         { title: 'Domingo', value: 'domingo' }
-      ]
+      ],
+      observations: [],
+      repetitionOfExerciseRules: [
+        (v) => (v && v >= 1) || 'O exercício deve ter no minimo 1 repetição'
+      ],
+      exerciseLoadRules: [(v) => !!v || 'É necessário uma carga para o exercício']
     }
   },
   components: {
@@ -130,7 +138,36 @@ export default {
         alert('Falha ao carregar dados')
       })
   },
-  methods: {}
+  methods: {
+    async addWorkout() {
+      const { valid } = await this.$refs.addWorkoutForm.validate()
+      console.log('entrou na requisição')
+      if (!valid) {
+        alert('Preencha todos os dados')
+        console.log(valid)
+        return
+      } else {
+        try {
+          const result = await axios.post(`http://localhost:3000/workouts`, {
+            student_id: this.$route.params.id,
+            exercise_id: this.exercisesSelected,
+            repetitions: this.repetitionOfExercise,
+            weight: this.exerciseLoad,
+            break_time: this.breakTime,
+            observations: this.observations,
+            day: this.dayOfWeek
+          })
+          if (result.status == 201) {
+            alert('Treino cadastrado com sucesso')
+            this.$refs.addWorkoutForm.reset()
+          }
+        } catch (error) {
+          console.error('Erro ao cadastrar o treino:', error)
+          alert('Não foi possível cadastrar o treino neste momento')
+        }
+      }
+    }
+  }
 }
 </script>
 
