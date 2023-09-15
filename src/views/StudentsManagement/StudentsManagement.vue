@@ -43,12 +43,12 @@
                   <tr v-for="student in studentsFiltered" :key="student.name">
                     <td>{{ student.name }}</td>
                     <td class="text-right">
-                      <router-link to="/cadastro_novo_treino"
+                      <router-link :to="`/cadastro_novo_treino/${student.id}`"
                         ><v-btn class="mr-8" color="primary" density="compact"
                           >Montar treino</v-btn
                         ></router-link
                       >
-                      <router-link to="/ver_treino"
+                      <router-link :to="`/ver_treino/${student.id}`"
                         ><v-btn color="primary" density="compact">Ver treino</v-btn></router-link
                       >
                     </td>
