@@ -2,11 +2,6 @@
   <v-app>
     <NavigationBar></NavigationBar>
     <v-main>
-      {{ exercisesSelected }}
-      <!-- {{ dayOfWeek }} -->
-      <!-- {{ breakTime }} -->
-      <!-- {{ dayOfWeek }} -->
-      <!-- {{ exercises }} -->
       <v-container>
         <v-row>
           <v-col>
@@ -107,7 +102,7 @@ export default {
       repetitionOfExercise: '',
       exerciseLoad: '',
       breakTime: 45,
-      dayOfWeek: [],
+      dayOfWeek: this.getCurrentDay(new Date().getDay()),
       daysOfWeek: [
         { title: 'Segunda-feira', value: 'segunda' },
         { title: 'Terça-feira', value: 'terca' },
@@ -132,19 +127,17 @@ export default {
       .get('http://localhost:3000/exercises')
       .then((response) => {
         this.exercises = response.data
-        console.log('entrou no then', this.exercises)
       })
       .catch(() => {
         alert('Falha ao carregar dados')
       })
   },
+
   methods: {
     async addWorkout() {
       const { valid } = await this.$refs.addWorkoutForm.validate()
-      console.log('entrou na requisição')
       if (!valid) {
         alert('Preencha todos os dados')
-        console.log(valid)
         return
       } else {
         try {
@@ -162,10 +155,23 @@ export default {
             this.$refs.addWorkoutForm.reset()
           }
         } catch (error) {
-          console.error('Erro ao cadastrar o treino:', error)
           alert('Não foi possível cadastrar o treino neste momento')
         }
       }
+    },
+    getCurrentDay(value) {
+      const dayOptions = [
+        { value: 'segunda', number: 1 },
+        { value: 'terca', number: 2 },
+        { value: 'quarta', number: 3 },
+        { value: 'quinta', number: 4 },
+        { value: 'sexta', number: 5 },
+        { value: 'sabado', number: 6 },
+        { value: 'domingo', number: 0 }
+      ]
+
+      this.dayOfWeek = dayOptions.find((item) => item.number === value)
+      return this.dayOfWeek.value
     }
   }
 }
