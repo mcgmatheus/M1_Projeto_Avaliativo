@@ -3,11 +3,6 @@
     <NavigationBar></NavigationBar>
     <v-main>
       <v-container>
-        <!-- {{ student_id }} -->
-        <!-- {{ allWorkouts }} -->
-        <!-- {{ dayOfWeek }} -->
-        <!-- {{ todayStudentWorkout }} -->
-        <!-- {{ saturdayWorkout }} -->
         <v-card
           ><v-card-title>
             <h2>Treino de Hoje</h2>
@@ -17,7 +12,8 @@
             <v-table>
               <thead>
                 <tr>
-                  <th class="text-left">Exercicio</th>
+                  <th class="text-left">Concluído</th>
+                  <th class="text-left">Exercício</th>
                   <th class="text-left">Repetições</th>
                   <th class="text-left">Carga</th>
                   <th class="text-left">Pausa</th>
@@ -26,6 +22,14 @@
               </thead>
               <tbody>
                 <tr v-for="exercise in todayStudentWorkout" :key="exercise.id">
+                  <td>
+                    <v-checkbox
+                      @click="exerciseDone(exercise)"
+                      color="primary"
+                      value="success"
+                      hide-details
+                    ></v-checkbox>
+                  </td>
                   <td>{{ exercise.exercise_description }}</td>
                   <td>{{ exercise.repetitions }}</td>
                   <td>{{ exercise.weight }} kg</td>
@@ -208,6 +212,7 @@ export default {
     return {
       student_id: this.$route.params.id,
       dayOfWeek: this.getCurrentDay(new Date().getDay()),
+      exerciseCheck: false,
       allWorkouts: [],
       todayStudentWorkout: [],
       sundayWorkout: [],
@@ -227,7 +232,6 @@ export default {
     axios
       .get(`http://localhost:3000/workouts?student_id=${this.$route.params.id}`)
       .then((response) => {
-        console.log('Dados recebidos:', response.data)
         this.allWorkouts = response.data.workouts
         this.todayStudentWorkout = response.data.workouts.filter(
           (item) => item.day === this.dayOfWeek
@@ -259,6 +263,16 @@ export default {
 
       this.dayOfWeek = dayOptions.find((item) => item.number === value)
       return this.dayOfWeek.value
+    },
+    exerciseDone(exercise) {
+      axios
+        .post(`http://localhost:3000/workouts/check`, {
+          workout_id: exercise.id,
+          student_id: this.student_id,
+          day_of_week: this.dayOfWeek
+        })
+        .then(() => console.log('exercicio realizado'))
+        .catch(() => console.log('Erro ao enviar exercicio realizado'))
     }
   }
 }
