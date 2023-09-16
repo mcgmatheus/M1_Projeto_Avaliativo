@@ -16,8 +16,6 @@
                     <v-col cols="12">
                       <v-autocomplete
                         clearable
-                        chips
-                        multiple
                         label="Selecione o exercício"
                         :items="exercises"
                         item-title="description"
@@ -112,7 +110,7 @@ export default {
         { title: 'Sábado', value: 'sabado' },
         { title: 'Domingo', value: 'domingo' }
       ],
-      observations: [],
+      observations: '',
       repetitionOfExerciseRules: [
         (v) => (v && v >= 1) || 'O exercício deve ter no minimo 1 repetição'
       ],
