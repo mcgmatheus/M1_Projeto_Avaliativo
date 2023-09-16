@@ -124,6 +124,17 @@ export default {
   created() {
     this.getTodayWorkout()
   },
+  mounted() {
+    axios
+      .get(`http://localhost:3000/workouts?student_id=${this.$route.params.id}`)
+      .then((response) => {
+        this.allWorkouts = response.data.workouts
+      })
+      .catch((error) => {
+        console.log(error)
+        alert('Falha ao carregar dados')
+      })
+  },
   methods: {
     getCurrentDay(value) {
       const dayOptions = [
