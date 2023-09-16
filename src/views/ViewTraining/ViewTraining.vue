@@ -3,10 +3,11 @@
     <NavigationBar></NavigationBar>
     <v-main>
       <v-container>
-        {{ student_id }}
-        {{ allWorkouts }}
-        {{ dayOfWeek }}
-        {{ todayStudentWorkout }}
+        <!-- {{ student_id }} -->
+        <!-- {{ allWorkouts }} -->
+        <!-- {{ dayOfWeek }} -->
+        <!-- {{ todayStudentWorkout }} -->
+        <!-- {{ fridayWorkout }} -->
         <v-card
           ><v-card-title>
             <h2>Treino de Hoje</h2>
@@ -24,10 +25,10 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="exercise in todayStudentWorkout" :key="exercise.name">
-                  <td>{{ exercise.exerciseDescription }}</td>
+                <tr v-for="exercise in todayStudentWorkout" :key="exercise.id">
+                  <td>{{ exercise.exercise_description }}</td>
                   <td>{{ exercise.repetitions }}</td>
-                  <td>{{ exercise.weight }}</td>
+                  <td>{{ exercise.weight }} kg</td>
                   <td>{{ exercise.break_time }} segundos</td>
                   <td>{{ exercise.observations }}</td>
                 </tr>
@@ -48,90 +49,26 @@ export default {
   data() {
     return {
       student_id: this.$route.params.id,
-      todayStudentWorkout: [],
       dayOfWeek: this.getCurrentDay(new Date().getDay()),
-      allWorkouts: [
-        {
-          id: 1,
-          exerciseDescription: 'supino',
-          repetitions: 12,
-          weight: 30,
-          break_time: 45,
-          day: 'segunda'
-        },
-        {
-          id: 1,
-          exerciseDescription: 'supino2',
-          repetitions: 12,
-          weight: 40,
-          break_time: 45,
-          day: 'terca'
-        },
-        {
-          id: 1,
-          exerciseDescription: 'supino3',
-          repetitions: 12,
-          weight: 50,
-          break_time: 45,
-          day: 'quarta'
-        },
-        {
-          id: 1,
-          exerciseDescription: 'supino4',
-          repetitions: 12,
-          weight: 60,
-          break_time: 45,
-          day: 'quinta'
-        },
-        {
-          id: 1,
-          exerciseDescription: 'supino5',
-          repetitions: 12,
-          weight: 70,
-          break_time: 45,
-          day: 'sexta'
-        },
-        {
-          id: 1,
-          exerciseDescription: 'supino6',
-          repetitions: 12,
-          weight: 80,
-          break_time: 45,
-          day: 'sabado'
-        },
-        {
-          id: 1,
-          exerciseDescription: 'supino7',
-          repetitions: 12,
-          weight: 90,
-          break_time: 45,
-          day: 'domingo'
-        },
-        {
-          id: 1,
-          exerciseDescription: 'flexão6',
-          repetitions: 25,
-          weight: 40,
-          break_time: 60,
-          day: 'sabado'
-        }
-      ]
+      allWorkouts: [],
+      todayStudentWorkout: []
     }
   },
   components: {
     NavigationBar
   },
-  created() {
-    this.getTodayWorkout()
-  },
   mounted() {
     axios
       .get(`http://localhost:3000/workouts?student_id=${this.$route.params.id}`)
       .then((response) => {
+        console.log('Dados recebidos:', response.data)
         this.allWorkouts = response.data.workouts
+        this.todayStudentWorkout = response.data.workouts.filter(
+          (item) => item.day === this.dayOfWeek
+        )
       })
       .catch((error) => {
-        console.log(error)
+        console.error('Erro na solicitação HTTP:', error)
         alert('Falha ao carregar dados')
       })
   },
@@ -149,12 +86,6 @@ export default {
 
       this.dayOfWeek = dayOptions.find((item) => item.number === value)
       return this.dayOfWeek.value
-    },
-    getTodayWorkout() {
-      this.todayStudentWorkout = this.allWorkouts.filter(
-        (workout) => workout.day === this.dayOfWeek
-      )
-      return this.todayStudentWorkout
     }
   }
 }
