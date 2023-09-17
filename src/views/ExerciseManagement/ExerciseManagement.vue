@@ -79,6 +79,7 @@ export default {
             description: this.addExercise
           })
           this.exercises.push({ description: this.addExercise })
+          this.$refs.addExerciseForm.reset()
           alert('Exercício cadastrado com sucesso!')
         } catch (error) {
           alert('Falha ao cadastrar exercício')
