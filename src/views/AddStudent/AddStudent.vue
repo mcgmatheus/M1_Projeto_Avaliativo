@@ -107,7 +107,7 @@
                       <v-text-field
                         label="Complemento"
                         type="text"
-                        v-moldel="studentAdressComplement"
+                        v-model="studentAdressComplement"
                       ></v-text-field>
                     </v-col>
                   </v-row>
