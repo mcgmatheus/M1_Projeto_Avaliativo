@@ -7,8 +7,9 @@
           <h2>Alunos</h2>
           <v-spacer></v-spacer>
           <router-link to="/cadastro_novo_aluno"
-            ><v-btn class="mb-2" color="primary" type="submit">Novo aluno</v-btn></router-link
+            ><v-btn class="mb-2 mr-2" color="primary" type="submit">Novo aluno</v-btn></router-link
           >
+          <router-link to="/home"><v-btn class="mb-2 ml-2">Voltar</v-btn></router-link>
           <v-divider :thickness="2"></v-divider>
         </v-row>
         <v-row>

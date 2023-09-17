@@ -73,9 +73,9 @@
                     </v-col>
                   </v-row>
                   <v-col>
-                    <v-btn class="ma-4" color="primary" type="submit">Cadastrar</v-btn>
+                    <v-btn class="ma-2" color="primary" type="submit">Cadastrar</v-btn>
                     <router-link to="/gerenciamento_alunos"
-                      ><v-btn class="ma-4" color="" type="submit">Cancelar</v-btn></router-link
+                      ><v-btn class="ma-2">Voltar</v-btn></router-link
                     >
                   </v-col>
                 </v-form>

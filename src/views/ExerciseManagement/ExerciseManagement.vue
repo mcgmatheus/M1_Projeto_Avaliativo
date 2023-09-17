@@ -12,7 +12,7 @@
             <v-card>
               <v-form ref="addExerciseForm" @submit.prevent="handleAddExercise" class="ma-5">
                 <v-row class="text-center">
-                  <v-col cols="9">
+                  <v-col cols="8">
                     <v-text-field
                       label="Digite o nome do exercício"
                       type="text"
@@ -20,8 +20,9 @@
                       :rules="addExerciseRules"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="3">
-                    <v-btn class="mt-2" color="primary" type="submit">Cadastrar</v-btn>
+                  <v-col cols="4">
+                    <v-btn class="ma-2" color="primary" type="submit">Cadastrar</v-btn>
+                    <router-link to="/home"><v-btn class="ma-2">Voltar</v-btn></router-link>
                   </v-col>
                 </v-row>
               </v-form>

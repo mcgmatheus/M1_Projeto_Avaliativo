@@ -10,7 +10,7 @@
                 <h2 class="mt-4">Treino de Hoje</h2>
                 <v-spacer></v-spacer>
                 <router-link to="/gerenciamento_alunos"
-                  ><v-btn class="ma-4" color="" type="submit">Voltar</v-btn></router-link
+                  ><v-btn class="ma-4">Voltar</v-btn></router-link
                 >
               </v-row>
             </v-col>

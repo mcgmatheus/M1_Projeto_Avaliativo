@@ -112,7 +112,8 @@
                     </v-col>
                   </v-row>
                   <v-col>
-                    <v-btn class="mt-2" color="primary" type="submit">Cadastrar</v-btn>
+                    <v-btn class="ma-2" color="primary" type="submit">Cadastrar</v-btn>
+                    <router-link to="/home"><v-btn class="ma-2">Voltar</v-btn></router-link>
                   </v-col>
                 </v-form>
               </v-card-text>
