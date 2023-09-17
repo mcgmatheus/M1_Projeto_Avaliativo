@@ -5,7 +5,15 @@
       <v-container>
         <v-card
           ><v-card-title>
-            <h2>Treino de Hoje</h2>
+            <v-col>
+              <v-row>
+                <h2 class="mt-4">Treino de Hoje</h2>
+                <v-spacer></v-spacer>
+                <router-link to="/gerenciamento_alunos"
+                  ><v-btn class="ma-4" color="" type="submit">Voltar</v-btn></router-link
+                >
+              </v-row>
+            </v-col>
             <v-divider :thickness="2"></v-divider>
           </v-card-title>
           <v-card-text>
@@ -181,7 +189,6 @@
                       <th class="text-left">Repetições</th>
                       <th class="text-left">Carga</th>
                       <th class="text-left">Pausa</th>
-                      <th class="text-left">Observações</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -190,7 +197,6 @@
                       <td>{{ exercise.repetitions }}</td>
                       <td>{{ exercise.weight }} kg</td>
                       <td>{{ exercise.break_time }} segundos</td>
-                      <td>{{ exercise.observations }}</td>
                     </tr>
                   </tbody>
                 </v-table>
