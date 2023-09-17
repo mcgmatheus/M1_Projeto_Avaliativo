@@ -91,6 +91,7 @@
 <script>
 import NavigationBar from '../../components/NavigationBar.vue'
 import axios from 'axios'
+import { getCurrentDay } from '../../utils/getCurrentDay.js'
 
 export default {
   data() {
@@ -100,7 +101,7 @@ export default {
       repetitionOfExercise: '',
       exerciseLoad: '',
       breakTime: 45,
-      dayOfWeek: this.getCurrentDay(new Date().getDay()),
+      dayOfWeek: getCurrentDay(new Date().getDay()),
       daysOfWeek: [
         { title: 'Segunda-feira', value: 'segunda' },
         { title: 'Terça-feira', value: 'terca' },
@@ -156,20 +157,6 @@ export default {
           alert('Não foi possível cadastrar o treino neste momento')
         }
       }
-    },
-    getCurrentDay(value) {
-      const dayOptions = [
-        { value: 'segunda', number: 1 },
-        { value: 'terca', number: 2 },
-        { value: 'quarta', number: 3 },
-        { value: 'quinta', number: 4 },
-        { value: 'sexta', number: 5 },
-        { value: 'sabado', number: 6 },
-        { value: 'domingo', number: 0 }
-      ]
-
-      this.dayOfWeek = dayOptions.find((item) => item.number === value)
-      return this.dayOfWeek.value
     }
   }
 }
