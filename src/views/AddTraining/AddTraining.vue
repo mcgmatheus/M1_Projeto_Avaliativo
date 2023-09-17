@@ -37,6 +37,7 @@
                       <v-text-field
                         label="Carga"
                         type="number"
+                        min="0"
                         v-model="exerciseLoad"
                         :rules="exerciseLoadRules"
                       ></v-text-field>
