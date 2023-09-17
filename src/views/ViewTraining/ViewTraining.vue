@@ -212,12 +212,13 @@
 <script>
 import NavigationBar from '../../components/NavigationBar.vue'
 import axios from 'axios'
+import { getCurrentDay } from '../../utils/getCurrentDay.js'
 
 export default {
   data() {
     return {
       student_id: this.$route.params.id,
-      dayOfWeek: this.getCurrentDay(new Date().getDay()),
+      dayOfWeek: getCurrentDay(new Date().getDay()),
       exerciseCheck: false,
       allWorkouts: [],
       todayStudentWorkout: [],
@@ -256,20 +257,6 @@ export default {
       })
   },
   methods: {
-    getCurrentDay(value) {
-      const dayOptions = [
-        { value: 'segunda', number: 1 },
-        { value: 'terca', number: 2 },
-        { value: 'quarta', number: 3 },
-        { value: 'quinta', number: 4 },
-        { value: 'sexta', number: 5 },
-        { value: 'sabado', number: 6 },
-        { value: 'domingo', number: 0 }
-      ]
-
-      this.dayOfWeek = dayOptions.find((item) => item.number === value)
-      return this.dayOfWeek.value
-    },
     exerciseDone(exercise) {
       axios
         .post(`http://localhost:3000/workouts/check`, {
